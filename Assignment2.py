@@ -21,12 +21,12 @@ class Rectangle:
         self.x = x
         self.y = y
 
-    def __str__(self):
-        return "{} {}\n".format(self.height, self.width, self.x, self.y)
+    def __str__ (self):
+        return "{}, {}, {}, {}".format(self.height, self.width, self.x, self.y)
 
 def pack(allRect, canvasSize):
 
-    # easier variables names to
+    # easier variables names
     canvasX = canvasSize[0]
     canvasY = canvasSize[1]
 
@@ -39,22 +39,26 @@ def pack(allRect, canvasSize):
         packer.add_rect(rectangle.height, rectangle.width)
     packer.pack()
     placed_rectangles = []
+    
     # retrieving rectangles
-    for bin in packer:
-        for i, rectangle in enumerate(bin):
-            # reassigning the rectangles with the new cordinates
-            allRect[i].x = rectangle.x
-            allRect[i].y = rectangle.y
-            width = rectangle.width
-            height = rectangle.height
-        
-            placed_rectangles.append(Rectangle(rectangle.x, rectangle.y, rectangle.x + width, rectangle.y + height))
+    for abin in packer:
+        # searching rectangles in bin
+        for i,rectangle in enumerate(abin):
+            # converting to int just in case
+            # making easier variable names
+            x = int(rectangle.x)
+            y = int(rectangle.y)
+            width = int(rectangle.width)
+            height = int(rectangle.height)
+            # pure cordinates here NO x + width just the starting cord and the size of rect
+            placed_rectangles.append(Rectangle(height, width, x, y))
+    
     return placed_rectangles
 
 def main():
 
-    percent = "25" #sys.argv[1]
-    file = "PercentFill.txt"#sys.argv[2]
+    percent = sys.argv[1]
+    file = sys.argv[2]
 
     # formats to some number xxPercentFill.txt
     fileName = "{}{}".format(percent,file)
@@ -66,6 +70,7 @@ def main():
         canvas_size = file.readline().strip()
         canvas_array = canvas_size.split(",")
 
+
         for line in file:
             # gets each line of and splits by height and width
             cordinatesArray = line.split(",")
@@ -75,9 +80,13 @@ def main():
     correctlyPlacedRectangles = pack(rectangleList, (int(canvas_array[0]), int(canvas_array[1])))
 
     newCavas = CustomCanvas(int(canvas_array[0]), int(canvas_array[1]))
+    # loops to add first x y then width of rectanl
     for r in correctlyPlacedRectangles:
-        newCavas.canvas.create_rectangle(r.height, r.width, r.x, 
-                                         r.y, fill='lightblue', outline='black')
+        # fiddled with the order of this shit like 90 billion times
+        # some how this works
+        # using x , y
+        # then to get second cordinate x + width to get length and y + height to depth
+        newCavas.canvas.create_rectangle(r.x, r.y, r.width + r.x, r.height +r.y, fill='lightblue', outline='black')
     newCavas.canvas.pack()
     newCavas.canvas.mainloop()
 
