@@ -20,6 +20,9 @@ int main(){
 
     //Test your linked list functions here!!!
 
+    struct Node* node = createList(infile);
+
+    
     fclose(infile);
 
 }
