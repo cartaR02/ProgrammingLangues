@@ -16,6 +16,25 @@ struct Node* createNode(char* data){
     return newNode;
 }
 
+void insertAtEnd(struct Node** head, struct Node* newNode){
+    // checking for empy node
+    if (newNode == NULL){
+        return;
+    }
+    if (*head == NULL){
+        *head = newNode;
+        return;
+    }
+    // iterates through list with temp node
+    struct Node* curr = *head;
+    while (curr->next != NULL){
+        // sets head to next to traverse
+        curr = curr->next;
+    }
+    // once next is null we hit the end
+    curr->next = newNode;
+}
+
 struct Node* createList(FILE* inf){
     
     char line[MAX_LINE_SIZE];
@@ -29,7 +48,7 @@ struct Node* createList(FILE* inf){
 
         // Instantiate the head when it does not exist
         if (head == NULL){
-            struct Node* head = createNode(line);
+            head = createNode(line);
             // sets tail to head as a itterator
             tail = head;
         }else{
@@ -45,25 +64,44 @@ struct Node* createList(FILE* inf){
 
 struct Node* removeNode(struct Node** head, int index){
 
-    if (head->next == NULL || head == NULL || index < 0){
+    if (*head == NULL || index < 0){
         return NULL;
     }
 
-    for (int i = 0; i < index; i++){
-        // check and return if next is null
-        // no need to check if current head is null
-        // counts as out of bounds
-        if (head->next == NULL){
+    struct Node* temp = *head;
+    // removing first node case
+    if (index == 0){
+        *head = (*head)->next;
+        return temp;
+    }
+
+    struct Node* previous = *head;
+    // finding the one beofre the end to remove :)
+    for (int i = 1; i < index; i++){
+        
+        // check for the end of the list
+        if (previous->next == NULL){
             return NULL;
         }
-        head = head->next;
+        previous = previous->next;
     }
+
+    // checking if the node to remove exists
+    if (previous->next == NULL){
+        return NULL;
+    }
+
+    // setting the previous node to point to the temps next 
+    // thus removing the middle
+    temp = previous->next;
+    previous->next = temp->next;
     
-    return head;
+    return temp;
 }
 
 void traverse(struct Node* head){
-
+    // going through not caring if the next is null
+    // only if the current one is null
     while (head != NULL){
         printf("%s\n", head->data);
         head = head->next;
@@ -72,16 +110,21 @@ void traverse(struct Node* head){
 
 void freeNode(struct Node* aNode){
     // does not check if node is null
+    if (aNode == NULL){
+        return;
+    }
     free(aNode->data);
     free(aNode);
 }
 
 void freeList(struct Node** head){
 
-    while (head != NULL){
-        struct Node* tempNode = head->next;
-        freeNode(head);
-        head = tempNode;
+    // holds next while it frees the head
+    // then sets the next to the current and repeats
+    while (*head != NULL){
+        struct Node* tempNode = (*head)->next;
+        freeNode(*head);
+        *head = tempNode;
     }
     
 }

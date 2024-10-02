@@ -22,6 +22,9 @@ int main(){
 
     struct Node* node = createList(infile);
 
+    struct Node* removedNode = removeNode(&node, 7);
+    printf("%s",removedNode->data);
+
     
     fclose(infile);
 
