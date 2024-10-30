@@ -23,3 +23,22 @@
         ) ; let
     ) ; if currentYear 2024
 ) ; defun leapYear
+
+
+;(defun union- (testingList '())
+
+;);defun union
+(defparameter *myList* (list 5 4 3 2 1))
+
+(defparameter *sorted_list* (sort (copy-list *myList*) #'<))
+
+; check if the list is non then check if the count is 0
+; 0 count means emmpty list > 0 count is a completely iterated list
+(defun avg (aList &optional(sum 0) (count 0))
+    (if (null aList)
+        (if (= count 0) ; count 0 then return 0 as base
+            NIL ;if
+            (/ sum count)) ; else 
+        (avg (cdr aList) (+ sum (car aList)) (+ count 1)) ; adds the current part in list and goes into next part of list count++
+    ) ; else for null aList
+)
