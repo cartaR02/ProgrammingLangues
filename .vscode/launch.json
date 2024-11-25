@@ -5,6 +5,20 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "type": "java",
+            "name": "Tokenizer",
+            "request": "launch",
+            "mainClass": "Tokenizer",
+            "projectName": "ProgrammingLangues_96cac8b"
+        },
+        {
+            "type": "java",
+            "name": "Common",
+            "request": "launch",
+            "mainClass": "Common",
+            "projectName": "ProgrammingLangues_96cac8b"
+        },
+        {
             "name": "Python Debugger: Current File with Arguments",
             "type": "debugpy",
             "request": "launch",
