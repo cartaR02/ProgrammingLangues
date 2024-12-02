@@ -25,6 +25,7 @@ public class Tokenizer {
     }
     // returns string of proper number/identifer format if true
     // returns null otherwise
+    // usually never gets called without being a number or identifier
     public static String checkValidity(String identifier){
         String returnedString = "";
         if (validNumber(identifier)){ 
@@ -146,6 +147,11 @@ public class Tokenizer {
         } //for file chars
         if(tokenStrings.containsKey(currentString)){
             outputString += tokenStrings.get(currentString) + " " + currentString;
+        }else{
+            String toConcat = checkValidity(currentString);
+            if (!toConcat.equals("")){
+                outputString += toConcat;
+            } 
         }
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(outputFilePath))){
             writer.write(outputString);
